@@ -1,0 +1,37 @@
+{
+  "name": "services-gateway",
+  "version": "1.6.0",
+  "description": "Les services c'est la vie ! Tout converge vers le gateway.",
+  "scripts": {
+    "test": "standard src/*.js",
+    "start": "DEBUG=abibao* ABIBAO_SERVICES_GATEWAY_NEWRELIC_APPNAME=api.deve.abibao.com node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/abibao/services-gateway.git"
+  },
+  "keywords": [
+    "services",
+    "gateway",
+    "abibao"
+  ],
+  "author": "team abibao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitlab.com/abibao/services-gateway/issues"
+  },
+  "homepage": "https://gitlab.com/abibao/services-gateway#README",
+  "engines": {
+    "node": ">=5.5"
+  },
+  "dependencies": {
+    "body-parser": "1.15.0",
+    "feathers": "2.0.0",
+    "feathers-errors": "2.1.0",
+    "feathers-rethinkdb": "0.2.0",
+    "rethinkdbdash": "2.2.18"
+  },
+  "devDependencies": {
+    "standard": "6.0.8"
+  }
+}
