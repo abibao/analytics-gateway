@@ -28,8 +28,10 @@
     "body-parser": "1.15.0",
     "feathers": "2.0.0",
     "feathers-errors": "2.1.0",
-    "feathers-rest": "1.2.4",
+    "feathers-hooks": "1.5.2",
+    "feathers-rest": "1.2.5",
     "feathers-rethinkdb": "0.2.0",
+    "lodash": "4.10.0",
     "nconf": "0.8.4",
     "rethinkdbdash": "2.2.18"
   },

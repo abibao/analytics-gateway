@@ -1,40 +1,39 @@
 'use strict'
 
 // load configurations
-const nconf = require("nconf")
-nconf.argv().env().file({ file: 'nconf-env.json' })
+const nconf = require('nconf')
+nconf.argv().env().file({ file: 'nconf-deve.json' })
 
-const feathers = require('feathers')
+// externals libraries
 const bodyParser = require('body-parser')
-const error = require('feathers-errors/handler')
+
+// feathers libraries
+const feathers = require('feathers')
 const rest = require('feathers-rest')
+const hooks = require('feathers-hooks')
+const error = require('feathers-errors/handler')
 
-const r = require('rethinkdbdash')({
-  silent: true,
-  port: nconf.get('ABIBAO_SERVICES_GATEWAY_SERVER_RETHINK_PORT'),
-  host: nconf.get('ABIBAO_SERVICES_GATEWAY_SERVER_RETHINK_HOST'),
-  authKey: nconf.get('ABIBAO_SERVICES_GATEWAY_SERVER_RETHINK_AUTH_KEY'),
-  db: nconf.get('ABIBAO_SERVICES_GATEWAY_SERVER_RETHINK_DB')
-})
-const service = require('feathers-rethinkdb')
+// declare libraries
+const surveys = require('./services/surveys')
 
-// A Feathers app is the same as an Express app
+// feathers application
 const app = feathers()
 
-app.configure(rest());
+// configure
+app.configure(rest())
+app.configure(hooks())
 
+// middlewares
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.use('/surveys', service({
-  Model: r,
-  name: 'surveys'
-}))
+// services
+app.use('/surveys', surveys)
 
-// Register a nicer error handler than the default Express one
+// register a nicer error handler than the default express one
 app.use(error())
 
-// Start the server
-app.listen( nconf.get('ABIBAO_SERVICES_GATEWAY_EXPOSE_PORT'),  nconf.get('ABIBAO_SERVICES_GATEWAY_EXPOSE_IP'), function () {
+// start the server
+app.listen(nconf.get('ABIBAO_SERVICES_GATEWAY_EXPOSE_PORT'), nconf.get('ABIBAO_SERVICES_GATEWAY_EXPOSE_IP'), function () {
   console.log('server started')
 })
