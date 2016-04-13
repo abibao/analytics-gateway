@@ -32,7 +32,7 @@
     "feathers-hooks": "1.5.2",
     "feathers-rest": "1.2.5",
     "feathers-rethinkdb": "0.2.0",
-    "lodash": "4.10.0",
+    "lodash": "4.11.0",
     "nconf": "0.8.4",
     "rethinkdbdash": "2.2.18"
   },

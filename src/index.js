@@ -14,7 +14,9 @@ const hooks = require('feathers-hooks')
 const error = require('feathers-errors/handler')
 
 // declare libraries
+const individuals = require('./services/individuals')
 const surveys = require('./services/surveys')
+const campaigns = require('./services/campaigns')
 
 // feathers application
 const app = feathers()
@@ -28,7 +30,9 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 // services
+app.use('/individuals', individuals)
 app.use('/surveys', surveys)
+app.use('/campaigns', campaigns)
 
 // register a nicer error handler than the default express one
 app.use(error())

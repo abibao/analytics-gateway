@@ -7,28 +7,18 @@ nconf.argv().env().file({ file: 'nconf-deve.json' })
 // externals libraries
 const _ = require('lodash')
 
-// feathers libraries
-const hooks = require('feathers-hooks');
-
 // internals libraries
 const Rethinkdb = require('./../contructors/services/rethinkdb')
 
-const TABLE_NAME = 'surveys'
+// feathers libraries
+const hooks = require('feathers-hooks');
+
+const TABLE_NAME = 'individuals'
 
 // constructor class
 class Service extends Rethinkdb.Service {
   setup (app) {
-    app.service(TABLE_NAME).after(hooks.populate('campaign', {
-      service: 'campaigns',
-      field: 'campaign'  
-    }))
-    app.service(TABLE_NAME).after(hooks.populate('individual', {
-      service: 'individuals',
-      field: 'individual'  
-    }))
-    app.service(TABLE_NAME).after({
-      all: hooks.remove('id')
-    })
+    app.service(TABLE_NAME).before(hooks.disable('external'))
   }
 }
 
