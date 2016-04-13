@@ -1,6 +1,6 @@
 {
   "name": "services-gateway",
-  "version": "1.6.0",
+  "version": "1.0.1",
   "description": "Les services c'est la vie ! Tout converge vers le gateway.",
   "scripts": {
     "test": "standard src/*.js",
