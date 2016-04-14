@@ -1,17 +1,14 @@
 'use strict'
 
-// load configurations
-const nconf = require('nconf')
-nconf.argv().env().file({ file: 'nconf-deve.json' })
-
-// externals libraries
-const _ = require('lodash')
-
-// feathers libraries
-const hooks = require('feathers-hooks');
-
 // internals libraries
 const Rethinkdb = require('./../contructors/services/rethinkdb')
+
+// feathers libraries
+const hooks = require('feathers-hooks')
+
+// application libraries
+const hookAfterURN = require('./../hooks/setURN')
+const hookAfterID = require('./../hooks/removeID')
 
 const TABLE_NAME = 'surveys'
 
@@ -20,15 +17,18 @@ class Service extends Rethinkdb.Service {
   setup (app) {
     app.service(TABLE_NAME).after(hooks.populate('campaign', {
       service: 'campaigns',
-      field: 'campaign'  
+      field: 'campaign'
+    }))
+    app.service(TABLE_NAME).after(hooks.populate('company', {
+      service: 'entities',
+      field: 'company'
     }))
     app.service(TABLE_NAME).after(hooks.populate('individual', {
       service: 'individuals',
-      field: 'individual'  
+      field: 'individual'
     }))
-    app.service(TABLE_NAME).after({
-      all: hooks.remove('id')
-    })
+    app.service(TABLE_NAME).after(hookAfterURN())
+    app.service(TABLE_NAME).after(hookAfterID())
   }
 }
 

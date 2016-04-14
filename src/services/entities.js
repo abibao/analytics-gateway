@@ -10,7 +10,7 @@ const hooks = require('feathers-hooks')
 const hookAfterURN = require('./../hooks/setURN')
 const hookAfterID = require('./../hooks/removeID')
 
-const TABLE_NAME = 'campaigns'
+const TABLE_NAME = 'entities'
 
 // constructor class
 class Service extends Rethinkdb.Service {

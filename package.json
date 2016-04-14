@@ -27,14 +27,15 @@
   "dependencies": {
     "bluebird": "3.3.5",
     "body-parser": "1.15.0",
+    "cryptr": "2.0.0",
     "feathers": "2.0.0",
     "feathers-errors": "2.1.0",
     "feathers-hooks": "1.5.2",
     "feathers-rest": "1.2.5",
     "feathers-rethinkdb": "0.2.0",
-    "lodash": "4.11.0",
+    "lodash": "4.11.1",
     "nconf": "0.8.4",
-    "rethinkdbdash": "2.2.18"
+    "rethinkdbdash": "2.2.17"
   },
   "devDependencies": {
     "standard": "6.0.8"

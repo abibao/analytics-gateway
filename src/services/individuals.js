@@ -1,17 +1,10 @@
 'use strict'
 
-// load configurations
-const nconf = require('nconf')
-nconf.argv().env().file({ file: 'nconf-deve.json' })
-
-// externals libraries
-const _ = require('lodash')
-
 // internals libraries
 const Rethinkdb = require('./../contructors/services/rethinkdb')
 
 // feathers libraries
-const hooks = require('feathers-hooks');
+const hooks = require('feathers-hooks')
 
 const TABLE_NAME = 'individuals'
 
