@@ -6,10 +6,6 @@ const Rethinkdb = require('./../contructors/services/rethinkdb')
 // feathers libraries
 const hooks = require('feathers-hooks')
 
-// application libraries
-const hookAfterURN = require('./../hooks/setURN')
-const hookAfterID = require('./../hooks/removeID')
-
 const TABLE_NAME = 'surveys'
 
 // constructor class
@@ -27,8 +23,6 @@ class Service extends Rethinkdb.Service {
       service: 'individuals',
       field: 'individual'
     }))
-    app.service(TABLE_NAME).after(hookAfterURN())
-    app.service(TABLE_NAME).after(hookAfterID())
   }
 }
 
