@@ -3,16 +3,11 @@
 // internals libraries
 const Rethinkdb = require('./../contructors/services/rethinkdb')
 
-// feathers libraries
-const hooks = require('feathers-hooks')
-
 const TABLE_NAME = 'individuals'
 
 // constructor class
 class Service extends Rethinkdb.Service {
-  setup (app) {
-    app.service(TABLE_NAME).before(hooks.disable('external'))
-  }
+  setup (app) {}
 }
 
 // exports

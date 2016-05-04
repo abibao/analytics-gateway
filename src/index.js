@@ -1,11 +1,16 @@
 'use strict'
 
+// use new relic agent
+require('newrelic')
+
+// configure console debug
+const debug = require('debug')('abibao:feather')
+
 // load configurations
 const nconf = require('nconf')
 nconf.argv().env().file({ file: 'nconf-deve.json' })
 
 // externals libraries
-const _ = require('lodash')
 const bodyParser = require('body-parser')
 
 // feathers libraries
@@ -19,10 +24,14 @@ const individuals = require('./services/individuals')
 const surveys = require('./services/surveys')
 const campaigns = require('./services/campaigns')
 const entities = require('./services/entities')
+const sqlAnswers = require('./services/sql/answers')
 
 // application hooks
-const hookAfterURN = require('./hooks/setURN')
-const hookAfterID = require('./hooks/removeID')
+
+// application middlewares
+const filterAnswers = require('./middlewares/filter-answers')
+const insertAnswers = require('./middlewares/insert-answers')
+const setApplicationServices = require('./middlewares/set-app-services')
 
 // feathers application
 const app = feathers()
@@ -35,23 +44,22 @@ app.configure(hooks())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-// services
+// rest services
 app.use('/individuals', individuals)
 app.use('/surveys', surveys)
 app.use('/campaigns', campaigns)
 app.use('/entities', entities)
+app.use('/sql_answers', sqlAnswers)
+
+// analytics services
+app.use('/batchs/answers', setApplicationServices(app), surveys, filterAnswers, insertAnswers)
 
 // register a nicer error handler than the default express one
 app.use(error())
 
 // insert hooks
-_.mapKeys(app.services, function (service) {
-  let key = service.options.name
-  app.service(key).after(hookAfterURN())
-  app.service(key).after(hookAfterID())
-})
 
 // start the server
-app.listen(nconf.get('ABIBAO_SERVICES_GATEWAY_EXPOSE_PORT'), nconf.get('ABIBAO_SERVICES_GATEWAY_EXPOSE_IP'), function () {
-  console.log('server started')
+app.listen(nconf.get('ABIBAO_ANALYTICS_GATEWAY_EXPOSE_PORT'), nconf.get('ABIBAO_ANALYTICS_GATEWAY_EXPOSE_IP'), function () {
+  debug('server started')
 })
