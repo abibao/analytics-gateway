@@ -23,7 +23,7 @@ class Service extends Rethinkdb.Service {
       service: 'entities',
       field: 'charity'
     }))
-    app.service(TABLE_NAME).before(hooks.populate('individualPopulate', {
+    app.service(TABLE_NAME).after(hooks.populate('individualPopulate', {
       service: 'individuals',
       field: 'individual'
     }))

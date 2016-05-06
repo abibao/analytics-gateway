@@ -3,9 +3,6 @@
 // internals libraries
 const MySQL = require('./../../contructors/services/mysql')
 
-// feathers libraries
-const hooks = require('feathers-hooks')
-
 const TABLE_NAME = 'answers'
 
 // constructor class

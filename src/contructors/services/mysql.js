@@ -8,10 +8,11 @@ nconf.argv().env().file({ file: 'nconf-deve.json' })
 const db = require('knex')({
   client: 'mysql',
   connection: {
-    host: '172.17.0.4',
-    user: '**ChangeMe**',
-    password: '**ChangeMe**',
-    database: 'abibao'
+    host: nconf.get('ABIBAO_ANALYTICS_GATEWAY_SERVER_MYSQL_HOST'),
+    port: nconf.get('ABIBAO_ANALYTICS_GATEWAY_SERVER_MYSQL_PORT'),
+    user: nconf.get('ABIBAO_ANALYTICS_GATEWAY_SERVER_MYSQL_USER'),
+    password: nconf.get('ABIBAO_ANALYTICS_GATEWAY_SERVER_MYSQL_PASSWORD'),
+    database: nconf.get('ABIBAO_ANALYTICS_GATEWAY_SERVER_MYSQL_DATABASE')
   }
 })
 const Service = require('feathers-knex')
