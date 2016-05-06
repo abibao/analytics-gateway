@@ -1,15 +1,11 @@
 'use strict'
 
-// configure console debug
-const debug = require('debug')('abibao:bus:compute_answers')
-
-// load configurations
-const nconf = require('nconf')
-nconf.argv().env().file({ file: 'nconf-deve.json' })
-
 const rp = require('request-promise')
 
+const nconf = global.ABIBAO.nconf
+
 module.exports = function (message) {
+  global.ABIBAO.debuggers.bus('BUS_EVENT_ANALYTICS_INSERT_ANSWER %o', message)
   // insert answer in mysql
   let options = {
     method: 'POST',
@@ -19,9 +15,9 @@ module.exports = function (message) {
   }
   rp(options)
     .then(function (data) {
-      debug(data)
+      global.ABIBAO.debuggers.bus('BUS_EVENT_ANALYTICS_INSERT_ANSWER %o', data)
     })
     .catch(function (error) {
-      debug('error: %o', error)
+      global.ABIBAO.debuggers.bus('BUS_EVENT_ANALYTICS_INSERT_ANSWER error: %o', error)
     })
 }

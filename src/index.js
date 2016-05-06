@@ -1,68 +1,68 @@
 'use strict'
 
+/*
+====================================================
+ROLES
+====================================================
+  - initialize application in node global
+  - initialize debuggers
+  - initialize loggers
+  - initialize services loaders
+====================================================
+*/
+
+// load environnement configuration
+var nconf = require('nconf')
+nconf.argv().env().file({ file: 'nconf-deve.json' })
+
+// initialize global.ABIBAO
+global.ABIBAO = {
+  starttime: new Date(),
+  uuid: require('node-uuid').v4(),
+  nconf: nconf,
+  services: { },
+  events: {
+    BusEvent: { },
+    ServerEvent: {}
+  },
+  constants: {
+    BusConstant: { },
+    ServerConstant: { }
+  },
+  debuggers: {
+    error: require('debug')('abibao:error'),
+    application: require('debug')('abibao:application'),
+    bus: require('debug')('abibao:bus'),
+    server: require('debug')('abibao:server')
+  }
+}
+
 // use new relic agent
 require('newrelic')
 
-// configure console debug
-const debug = require('debug')('abibao:feather')
+// use debuggers reference
+var abibao = {
+  debug: global.ABIBAO.debuggers.application,
+  error: global.ABIBAO.debuggers.error
+}
 
-// load configurations
-const nconf = require('nconf')
-nconf.argv().env().file({ file: 'nconf-deve.json' })
+abibao.debug('start processing')
 
-// use servicebus
-const bus = require('servicebus').bus({
-  url: nconf.get('ABIBAO_ANALYTICS_GATEWAY_RABBITMQ_URL')
-})
-bus.listen('BUS_EVENT_ANALYTICS_IS_ALIVE', require('./bus/handlers/is_alive'))
-bus.listen('BUS_EVENT_ANALYTICS_COMPUTE_ANSWERS', require('./bus/handlers/compute_answers'))
-bus.listen('BUS_EVENT_ANALYTICS_INSERT_ANSWER', require('./bus/handlers/insert_answers'))
-
-// externals libraries
-const bodyParser = require('body-parser')
-
-// feathers libraries
-const feathers = require('feathers')
-const rest = require('feathers-rest')
-const hooks = require('feathers-hooks')
-const error = require('feathers-errors/handler')
-
-// rethinkdb services
-const individuals = require('./services/individuals')
-const surveys = require('./services/surveys')
-const campaigns = require('./services/campaigns')
-const entities = require('./services/entities')
-
-// mysql services
-const answers = require('./services/sql/answers')
-
-// feathers application
-const app = feathers()
-
-// configure
-app.configure(rest())
-app.configure(hooks())
-
-// middlewares
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
-
-// rethinkdb rest services
-app.use('/individuals', individuals)
-app.use('/surveys', surveys)
-app.use('/campaigns', campaigns)
-app.use('/entities', entities)
-
-// mysql rest services
-app.use('/answers', answers)
-
-// register a nicer error handler than the default express one
-app.use(error())
-
-// insert hooks
-
-// start the server
-app.listen(nconf.get('ABIBAO_ANALYTICS_GATEWAY_EXPOSE_PORT'), nconf.get('ABIBAO_ANALYTICS_GATEWAY_EXPOSE_IP'), function () {
-  debug('server started')
-  bus.send('BUS_EVENT_ANALYTICS_IS_ALIVE', '')
-})
+// start all services
+var services = require('./services')
+services.bus()
+  .then(function (item) {
+    abibao.debug('bus initialized')
+    return services.server()
+      .then(function () {
+        abibao.debug('server initialized')
+        abibao.debug('end processing')
+        global.ABIBAO.services.server.listen(nconf.get('ABIBAO_ANALYTICS_GATEWAY_EXPOSE_PORT'), nconf.get('ABIBAO_ANALYTICS_GATEWAY_EXPOSE_IP'), function () {
+          abibao.debug('server has just started')
+          global.ABIBAO.services.bus.send(global.ABIBAO.events.BusEvent.BUS_EVENT_IS_ALIVE, 'rabbitmq is alive')
+        })
+      })
+  })
+  .catch(function (error) {
+    abibao.error(error)
+  })

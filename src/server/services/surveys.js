@@ -11,6 +11,7 @@ const TABLE_NAME = 'surveys'
 // constructor class
 class Service extends Rethinkdb.Service {
   setup (app) {
+    // hooks
     app.service(TABLE_NAME).after(hooks.populate('campaignPopulate', {
       service: 'campaigns',
       field: 'campaign'

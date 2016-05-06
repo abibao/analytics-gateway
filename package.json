@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "bluebird": "3.3.5",
-    "body-parser": "1.15.0",
+    "body-parser": "1.15.1",
     "cryptr": "2.0.0",
     "debug": "2.2.0",
     "feathers": "2.0.1",
@@ -40,7 +40,7 @@
     "lodash": "4.11.2",
     "mysql": "2.10.2",
     "nconf": "0.8.4",
-    "newrelic": "1.27.1",
+    "newrelic": "1.27.2",
     "node-uuid": "1.4.7",
     "request-promise": "3.0.0",
     "rethinkdbdash": "2.3.6",
