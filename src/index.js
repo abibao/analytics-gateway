@@ -18,6 +18,7 @@ nconf.argv().env().file({ file: 'nconf-deve.json' })
 // initialize global.ABIBAO
 global.ABIBAO = {
   starttime: new Date(),
+  name: 'ANALYTICS GATEWAY',
   uuid: require('node-uuid').v4(),
   nconf: nconf,
   services: { },
@@ -59,7 +60,11 @@ services.bus()
         abibao.debug('end processing')
         global.ABIBAO.services.server.listen(nconf.get('ABIBAO_ANALYTICS_GATEWAY_EXPOSE_PORT'), nconf.get('ABIBAO_ANALYTICS_GATEWAY_EXPOSE_IP'), function () {
           abibao.debug('server has just started')
-          global.ABIBAO.services.bus.send(global.ABIBAO.events.BusEvent.BUS_EVENT_IS_ALIVE, 'rabbitmq is alive')
+          global.ABIBAO.services.bus.publish(global.ABIBAO.events.BusEvent.BUS_EVENT_IS_ALIVE, {
+            name: global.ABIBAO.name,
+            uuid: global.ABIBAO.uuid,
+            message: 'has just connected into the bus'
+          })
         })
       })
   })

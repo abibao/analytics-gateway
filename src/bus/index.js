@@ -28,7 +28,7 @@ internals.initialize = function () {
   return new Promise(function (resolve, reject) {
     try {
       internals.bus = require('servicebus').bus(internals.options)
-      internals.bus.listen(internals.events.BUS_EVENT_IS_ALIVE, require('./handlers/is_alive'))
+      internals.bus.subscribe(internals.events.BUS_EVENT_IS_ALIVE, require('./handlers/is_alive'))
       internals.bus.listen(internals.events.BUS_EVENT_ANALYTICS_COMPUTE_ANSWER, require('./handlers/compute_answer'))
       internals.bus.listen(internals.events.BUS_EVENT_ANALYTICS_INSERT_ANSWER, require('./handlers/insert_answer'))
       resolve()
