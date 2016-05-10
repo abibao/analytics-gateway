@@ -61,11 +61,13 @@ const computeAnswers = function (data) {
           .then(function (choice) {
             row.answer = choice.prefix + '_' + choice.suffix
             row.answer_text = choice.text
-            resolve(row)
+            rows.push(row)
+            resolve(rows)
           })
           .catch(function () {
             row.answer = value
-            resolve(row)
+            rows.push(row)
+            resolve(rows)
           })
       }
     })
@@ -84,11 +86,11 @@ const getSurveys = function (skip) {
     .then(function (surveys) {
       let key = 0
       async.mapLimit(surveys.data, 1, function (survey, next) {
-        console.log('[skip %s] start %s', surveys.skip + key, survey.id)
+        console.log('[%s] survey n°%s', survey.id, surveys.skip + key)
         key += 1
         computeAnswers(survey)
-          .then(function (answer) {
-            next(null, answer)
+          .then(function (computed) {
+            next(null, computed)
           })
           .catch(function (error) {
             next(error)
@@ -109,13 +111,8 @@ const getSurveys = function (skip) {
           opts.body = answer
           rp(opts)
             .then(function (result) {
-              if (_.isArray(result)) {
-                globalTotalRows += result.length
-                console.log('..................... %s answers', result.length)
-              } else {
-                globalTotalRows += 1
-                console.log('.....[%s]............ 1 answer', answer.question)
-              }
+              globalTotalRows += result.length
+              console.log('..................... %s answers', result.length)
               next(null, result)
             })
             .catch(function (error) {
