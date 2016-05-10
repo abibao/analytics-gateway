@@ -1,11 +1,12 @@
 'use strict'
 
 const _ = require('lodash')
+const Hoek = require('hoek')
 
 module.exports = function (message) {
   global.ABIBAO.debuggers.bus('BUS_EVENT_ANALYTICS_COMPUTE_ANSWER %o', message)
-  var surveys = global.ABIBAO.services.server.service('surveys')
-  var campaignsItemsChoices = global.ABIBAO.services.server.service('campaigns_items_choices')
+  var surveys = Hoek.clone(global.ABIBAO.services.server.service('surveys'))
+  var campaignsItemsChoices = Hoek.clone(global.ABIBAO.services.server.service('campaigns_items_choices'))
   // get survey in rethinkdb
   surveys.get(message.id)
     .then(function (data) {
@@ -17,6 +18,8 @@ module.exports = function (message) {
             row.email = data.individualPopulate.email
             row.campaign_id = data.campaignPopulate.id
             row.campaign_name = data.campaignPopulate.name
+            row.charity_id = data.charityPopulate.id
+            row.charity_name = data.charityPopulate.name
             row.question = label
             campaignsItemsChoices.get(_value)
               .then(function (choice) {
@@ -34,6 +37,8 @@ module.exports = function (message) {
           row.email = data.individualPopulate.email
           row.campaign_id = data.campaignPopulate.id
           row.campaign_name = data.campaignPopulate.name
+          row.charity_id = data.charityPopulate.id
+          row.charity_name = data.charityPopulate.name
           row.question = label
           campaignsItemsChoices.get(value)
             .then(function (choice) {

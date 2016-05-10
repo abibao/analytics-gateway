@@ -34,5 +34,9 @@ class Service extends Rethinkdb.Service {
 // exports
 module.exports = new Service({
   Model: Rethinkdb.r,
-  name: TABLE_NAME
+  name: TABLE_NAME,
+  paginate: {
+    default: 10,
+    max: 20
+  }
 })

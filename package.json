@@ -42,11 +42,11 @@
     "nconf": "0.8.4",
     "newrelic": "1.27.2",
     "node-uuid": "1.4.7",
-    "request-promise": "3.0.0",
     "rethinkdbdash": "2.3.6",
     "servicebus": "2.0.1"
   },
   "devDependencies": {
+    "request-promise": "3.0.0",
     "standard": "7.0.1"
   }
 }

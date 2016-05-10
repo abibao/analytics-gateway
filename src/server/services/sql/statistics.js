@@ -3,7 +3,7 @@
 // internals libraries
 const MySQL = require('./../../contructors/services/mysql')
 
-const TABLE_NAME = 'answers'
+const TABLE_NAME = 'statistics'
 
 // constructor class
 class Service extends MySQL.Service {
@@ -13,9 +13,5 @@ class Service extends MySQL.Service {
 // exports
 module.exports = new Service({
   Model: MySQL.db,
-  name: TABLE_NAME,
-  paginate: {
-    default: 10,
-    max: 20
-  }
+  name: TABLE_NAME
 })

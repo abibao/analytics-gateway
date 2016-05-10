@@ -1,23 +1,34 @@
 'use strict'
 
-const rp = require('request-promise')
-
-const nconf = global.ABIBAO.nconf
+var Hoek = require('hoek')
 
 module.exports = function (message) {
-  global.ABIBAO.debuggers.bus('BUS_EVENT_ANALYTICS_INSERT_ANSWER %o', message)
-  // insert answer in mysql
-  let options = {
-    method: 'POST',
-    uri: 'http://' + nconf.get('ABIBAO_ANALYTICS_GATEWAY_EXPOSE_IP') + ':' + nconf.get('ABIBAO_ANALYTICS_GATEWAY_EXPOSE_PORT') + '/answers',
-    body: message,
-    json: true
+  var answers = Hoek.clone(global.ABIBAO.services.server.service('answers'))
+  // check if exists ?
+  var params = {
+    query: {
+      email: message.email,
+      campaign_id: message.campaign_id,
+      question: message.question,
+      answer: message.answer
+    }
   }
-  rp(options)
-    .then(function (data) {
-      global.ABIBAO.debuggers.bus('BUS_EVENT_ANALYTICS_INSERT_ANSWER %o', data)
+  answers.find(params)
+    .then(function (results) {
+      global.ABIBAO.debuggers.bus('BUS_EVENT_ANALYTICS_INSERT_ANSWER find: %s %s [%s]', message.email, message.campaign_id, results.data.length)
+      if (results.data.length === 0) {
+        // insert answer in mysql
+        answers.create(message)
+          .then(function () {
+            // global.ABIBAO.debuggers.bus('BUS_EVENT_ANALYTICS_INSERT_ANSWER insert: %o', result)
+          })
+          .catch(function () {
+            // global.ABIBAO.debuggers.bus('BUS_EVENT_ANALYTICS_INSERT_ANSWER insert error: %o', error)
+          })
+      } else {
+      }
     })
-    .catch(function (error) {
-      global.ABIBAO.debuggers.bus('BUS_EVENT_ANALYTICS_INSERT_ANSWER error: %o', error)
+    .catch(function (s) {
+      // global.ABIBAO.debuggers.bus('BUS_EVENT_ANALYTICS_INSERT_ANSWER find error: %o', error)
     })
 }

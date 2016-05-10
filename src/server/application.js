@@ -19,6 +19,7 @@ const campaignsItemsChoices = require('./services/campaigns_items_choices')
 
 // mysql services
 const answers = require('./services/sql/answers')
+const statistics = require('./services/sql/statistics')
 
 // export server
 module.exports = function () {
@@ -43,6 +44,7 @@ module.exports = function () {
 
   // mysql rest services
   app.use('/answers', answers)
+  app.use('/statistics', statistics)
 
   // register a nicer error handler than the default express one
   app.use(error())
