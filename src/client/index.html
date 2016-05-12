@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html dir="ltr" class="uk-height-1-1">
+  <head>
+    <meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>Abibao · Welcome to the administration website</title>
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<meta name="author" content="Gilles Perreymond">
+		<link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link href="//cdnjs.cloudflare.com/ajax/libs/uikit/2.26.2/css/uikit.almost-flat.min.css" rel="stylesheet">
+		<link href="//cdnjs.cloudflare.com/ajax/libs/uikit/2.26.2/css/components/notify.almost-flat.min.css" rel="stylesheet">
+		<link href="//cdnjs.cloudflare.com/ajax/libs/uikit/2.26.2/css/components/upload.almost-flat.min.css" rel="stylesheet">
+		<link href="//cdnjs.cloudflare.com/ajax/libs/uikit/2.26.2/css/components/form-file.almost-flat.min.css" rel="stylesheet">
+		<link href="//cdnjs.cloudflare.com/ajax/libs/uikit/2.26.2/css/components/placeholder.almost-flat.css" rel="stylesheet">
+		<link href="//cdnjs.cloudflare.com/ajax/libs/uikit/2.26.2/css/components/dotnav.almost-flat.min.css" rel="stylesheet">
+		<link href="//cdnjs.cloudflare.com/ajax/libs/uikit/2.26.2/css/components/nestable.almost-flat.min.css" rel="stylesheet">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/uikit/2.26.2/css/components/form-select.almost-flat.min.css" rel="stylesheet">
+		<link href="styles/abibao.css" rel="stylesheet">
+  </head>
+  <body class="uk-height-1-1">
+
+    <loading if={ facade.getLoading()===true }> </loading>
+    <route> </route>
+
+    <!-- scripts -->
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.3.0/lodash.min.js"></script>
+    <script>
+      var lodash = _;
+    </script>
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/riot/2.3.17/riot+compiler.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.4/bluebird.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/async/1.5.2/async.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.0/js.cookie.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/uikit/2.26.2/js/uikit.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/uikit/2.26.2/js/components/notify.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/uikit/2.26.2/js/components/upload.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/uikit/2.26.2/js/components/nestable.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/uikit/2.26.2/js/components/form-select.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/superagent/1.2.0/superagent.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/core-js/2.1.4/core.min.js"></script>
+    <script type="text/javascript" src="//npmcdn.com/feathers-client@1.2.0/dist/feathers.js"></script>
+    <script type="text/javascript" src="libs/debug.js"></script>
+    <script type="text/javascript" src="libs/arrive.min.js"></script>
+    <script type="text/javascript" src="libs/router.min.js"></script>
+
+    <!-- riot application -->
+
+    <script type="text/javascript" src="ruxx/actions/auth.js"></script>
+    <script type="text/javascript" src="ruxx/actions/campaigns.js"></script>
+    <script type="text/javascript" src="ruxx/actions/entities.js"></script>
+    <script type="text/javascript" src="ruxx/stores/auth.js"></script>
+    <script type="text/javascript" src="ruxx/stores/entities.js"></script>
+    <script type="text/javascript" src="ruxx/facade.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+
+    <script>
+      $(document).ready(function() {
+        facade.debugHTML("ready!");
+      });
+    </script>
+
+  </body>
+</html>

@@ -1,25 +1,28 @@
 'use strict'
 
 // externals libraries
+const path = require('path')
 const bodyParser = require('body-parser')
 
 // feathers libraries
 const feathers = require('feathers')
 const rest = require('feathers-rest')
 const hooks = require('feathers-hooks')
+const authentication = require('feathers-authentication')
 const error = require('feathers-errors/handler')
 
 // rethinkdb services
-const individuals = require('./services/individuals')
-const surveys = require('./services/surveys')
-const campaigns = require('./services/campaigns')
-const entities = require('./services/entities')
-const campaignsItems = require('./services/campaigns_items')
-const campaignsItemsChoices = require('./services/campaigns_items_choices')
+const administrators = require('./services/rethinkdb/administrators')
+const individuals = require('./services/rethinkdb/individuals')
+const surveys = require('./services/rethinkdb/surveys')
+const campaigns = require('./services/rethinkdb/campaigns')
+const entities = require('./services/rethinkdb/entities')
+const campaignsItems = require('./services/rethinkdb/campaigns_items')
+const campaignsItemsChoices = require('./services/rethinkdb/campaigns_items_choices')
 
 // mysql services
-const answers = require('./services/sql/answers')
-const statistics = require('./services/sql/statistics')
+const answers = require('./services/mysql/answers')
+const statistics = require('./services/mysql/statistics')
 
 // export server
 module.exports = function () {
@@ -34,7 +37,17 @@ module.exports = function () {
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))
 
+  // security
+  app.configure(authentication({
+    local: false,
+    token: {
+      secret: global.ABIBAO.nconf.get('ABIBAO_ANALYTICS_GATEWAY_AUTHENTIFICATION_TOKEN'),
+      payload: ['id', 'email']
+    }
+  }))
+
   // rethinkdb rest services
+  app.use('/administrators', administrators)
   app.use('/individuals', individuals)
   app.use('/surveys', surveys)
   app.use('/campaigns', campaigns)
@@ -45,6 +58,9 @@ module.exports = function () {
   // mysql rest services
   app.use('/answers', answers)
   app.use('/statistics', statistics)
+
+  // static
+  app.use('/', feathers.static(path.resolve(__dirname, '../client')))
 
   // register a nicer error handler than the default express one
   app.use(error())

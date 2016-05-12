@@ -32,6 +32,7 @@
     "cryptr": "2.0.0",
     "debug": "2.2.0",
     "feathers": "2.0.1",
+    "feathers-authentication": "0.7.7",
     "feathers-errors": "2.1.0",
     "feathers-hooks": "1.5.3",
     "feathers-knex": "2.1.2",
