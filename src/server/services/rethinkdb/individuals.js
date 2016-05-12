@@ -1,7 +1,7 @@
 'use strict'
 
 // internals libraries
-const Rethinkdb = require('./../contructors/services/rethinkdb')
+const Rethinkdb = require('./../../contructors/services/rethinkdb')
 
 // feathers libraries
 const hooks = require('feathers-hooks')
