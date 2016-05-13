@@ -1,10 +1,11 @@
 {
   "name": "analytics-gateway",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "Les services c'est la vie ! Tout converge vers le gateway.",
   "scripts": {
     "test": "clear && standard src/*.js",
     "start": "clear && DEBUG=abibao* ABIBAO_ANALYTICS_GATEWAY_NEWRELIC_APPNAME=analytics.deve.abibao.com node .",
+    "batch:compute:answers": "clear && DEBUG=abibao* node batchs/01-compute-all-answers.js",
     "shrinkwrap": "./tasks/shrinkwrap.sh"
   },
   "repository": {

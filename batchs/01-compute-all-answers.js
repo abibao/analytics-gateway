@@ -8,7 +8,7 @@ const surveys = require('./bin/surveys')
 debug('== [%s] ====================', new Date())
 surveys.list()
   .then(function (result) {
-    debug('done', result.length)
+    debug('== [DONE] ==================== %s surveys', result.length)
   })
   .catch(function (error) {
     debug('== [ERROR] ==================== %o', new Date(), error)

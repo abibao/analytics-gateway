@@ -24,6 +24,9 @@ const campaignsItemsChoices = require('./services/rethinkdb/campaigns_items_choi
 const answers = require('./services/mysql/answers')
 const statistics = require('./services/mysql/statistics')
 
+// batchs services
+const batchsComputeAnswers = require('./services/batchs/compute-answers')
+
 // export server
 module.exports = function () {
   // feathers application
@@ -46,7 +49,7 @@ module.exports = function () {
     }
   }))
 
-  // rethinkdb rest services
+  // rethinkdb services
   app.use('/administrators', administrators)
   app.use('/individuals', individuals)
   app.use('/surveys', surveys)
@@ -55,9 +58,12 @@ module.exports = function () {
   app.use('/campaigns_items', campaignsItems)
   app.use('/campaigns_items_choices', campaignsItemsChoices)
 
-  // mysql rest services
+  // mysql services
   app.use('/answers', answers)
   app.use('/statistics', statistics)
+
+  // batchs services
+  app.get('/batchs/computes/answers', batchsComputeAnswers)
 
   // static
   app.use('/', feathers.static(path.resolve(__dirname, '../client')))

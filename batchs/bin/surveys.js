@@ -23,8 +23,8 @@ internals.run = function (skip, limit, data, currentPercent, resolve, reject, ca
   }
   rp(optsSurveysList)
     .then(function (result) {
-      currentPercent = 100 * (data.length / result.total)
-      _.merge(data, result.data)
+      currentPercent = Math.min(100 * (skip + limit) / (result.total), 100)
+      data = data.concat(result.data)
       debug('currentPercent=%s% / data.count=%s', currentPercent, data.length)
       if (currentPercent < 100) {
         let __function = Hoek.clone(internals.run)
